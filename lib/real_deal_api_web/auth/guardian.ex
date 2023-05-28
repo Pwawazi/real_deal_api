@@ -1,6 +1,7 @@
 defmodule RealDealApiWeb.Auth.Guardian do
   use Guardian, otp_app: :real_deal_api
   alias RealDealApi.Accounts
+  require Logger
 
   def subject_for_token(%{id: id}, _claims) do
     sub = to_string(id)
@@ -26,7 +27,8 @@ defmodule RealDealApiWeb.Auth.Guardian do
     case Accounts.get_account_by_email(email) do
       nil -> {:error, :unauthored}
       account ->
-        case validate_password(password, account.hash_password) do
+        Logger.debug "The account belongs to '#{account.email}'"
+        case validate_password(password, account.hashed_password) do
           true -> create_token(account)
           false -> {:error, :unauthorized}
         end
@@ -34,8 +36,8 @@ defmodule RealDealApiWeb.Auth.Guardian do
     end
   end
 
-  defp validate_password(password, hash_password) do
-    Bcrypt.verify_pass(password, hash_password)
+  defp validate_password(password, hashed_password) do
+    Bcrypt.verify_pass(password, hashed_password)
   end
 
   defp create_token(account) do
