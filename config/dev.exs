@@ -2,13 +2,15 @@ import Config
 
 # Configure your database
 config :real_deal_api, RealDealApi.Repo,
-  username: "backend_stuff",
-  password: "blork_erlang",
-  hostname: "localhost",
-  database: "bs_db",
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  hostname: System.get_env("DATABASE_HOST"),
+  database: System.get_env("DATABASE_NAME"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+  # socket_options: [:inet6] ##Enabling this will cause localhost DB connection to fail
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -23,7 +25,7 @@ config :real_deal_api, RealDealApiWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "4sresSM1sF/hRu836FvtF+DusgW/7ESGW8fRkBhPX8mswv8J02yQtrGiS3LGkpDV",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   watchers: []
 
 # ## SSL Support

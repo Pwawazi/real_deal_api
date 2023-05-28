@@ -16,17 +16,17 @@ config :real_deal_api, RealDealApiWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: RealDealApiWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: RealDealApi.PubSub,
-  live_view: [signing_salt: "lHlCbTi2"]
+  live_view: [signing_salt: System.get_env("SIGNING_SALT")]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-#Configuration fro guardian
+#Configuration for guardian
 config :real_deal_api, RealDealApiWeb.Auth.Guardian,
   issuer: "real_deal_api",
-  secret_key: "IaHAQm9F/o2Sg0v0D1HWnFhjZ7yvBvadS4I2vNzDCM1nlZqs2inw0y5vo17fItRH"
+  secret_key: System.get_env("SECRET_KEY_BASE")
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
