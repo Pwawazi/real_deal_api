@@ -29,7 +29,10 @@ defmodule RealDealApiWeb.Router do
 
   scope "/api", RealDealApiWeb do
     pipe_through [:api, :auth]
-    get "/accounts/by-id/:id", AccountController, :show
+    get "/accounts/current-account", AccountController, :current_account
+    get "/accounts/sign-out", AccountController, :sign_out
+    get "/accounts/refresh-session", AccountController, :refresh_session
     post "/accounts/update", AccountController, :update
+    put "/users/update", UserController, :update
   end
 end
